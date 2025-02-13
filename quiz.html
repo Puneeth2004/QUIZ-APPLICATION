@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzo</title>
+    <link rel="stylesheet" href="quiz.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="quiz">
+        <h1 id="quizTitle">Quiz</h1>
+        <h3 id="timer">Time Left: 10:00</h3> <!-- Timer -->
+        <h2 id="question">Question here</h2>
+
+        <button class="ans"></button>
+        <button class="ans"></button>
+        <button class="ans"></button>
+        <button class="ans"></button>
+    </div>
+
+    <div class="opt">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+        <button id="submit">Submit</button>
+    </div>
+
+    <script>
+        const field = localStorage.getItem("selectedField");
+
+        const questions = {
+            space: [
+                { q: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], answer: "Mars" },
+                { q: "Which planet is known for its thick atmosphere and strong winds?", options: ["Earth", "Mars", "Jupiter", "Saturn"], answer: "Jupiter" },
+                { q: "Which planet is known for its icy surface and extreme temperatures?", options: ["Neptune", "Mars", "Jupiter", "Saturn"], answer: "Neptune" },
+                { q: "Which planet is known for its rings and moons?", options: ["Earth", "Mars", "Jupiter", "Saturn"], answer: "Saturn" },
+                { q: "What is the Great Red Spot on Jupiter?", options: ["A giant crater", "A storm", "A volcano", "A frozen lake"],answer: "A storm"},
+                { q: "Which planet has the most moons?", options: ["Saturn", "Jupiter", "Uranus", "Neptune"], answer: "Saturn" },
+                { q: "What is the main component of the Sun?", options: ["Oxygen", "Hydrogen", "Helium", "Nitrogen"], answer: "Hydrogen" },
+                { q: "How long does it take for light from the Sun to reach Earth?", options: ["3 minutes", "8 minutes", "12 minutes", "16 minutes"], answer: "8 minutes" },
+                { q: "What is a black hole?", options: ["A collapsed star with intense gravity", "A hole in space", "A region without air", "A supernova remnant"], answer: "A collapsed star with intense gravity" },
+                { q: "What is the Kuiper Belt?", options: ["A region of asteroids between Mars and Jupiter", "A distant region of icy bodies beyond Neptune", "A ring around Saturn", "A black hole near Pluto"], answer: "A distant region of icy bodies beyond Neptune" },  
+            ],
+
+            geography: 
+            [
+
+                { q: "Which is the longest river in the world?", options: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"], answer: "Nile River" },
+                { q: "Which desert is the largest in the world?", options: ["Sahara Desert", "Antarctic Desert", "Gobi Desert", "Kalahari Desert"], answer: "Sahara Desert" },
+                { q: "What is the capital of Canada?", options: ["Toronto", "Ottawa", "Vancouver", "Montreal"], answer: "Ottawa" },
+                { q: "Which country has the most natural lakes?", options: ["Canada", "Russia", "United States", "Brazil"], answer: "Canada" },
+                { q: "Which continent has the most countries?", options: ["Asia", "Africa", "Europe", "South America"], answer: "Africa" },
+                { q: "Which is the smallest country in the world by land area?", options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"], answer: "Vatican City" },
+                { q: "What is the deepest ocean in the world?", options: ["Atlantic Ocean", "Indian Ocean", "Southern Ocean", "Pacific Ocean"], answer: "Pacific Ocean"  },
+                { q: "Which of the following countries is landlocked?", options: ["Thailand", "Afghanistan", "Vietnam", "Philippines"], answer: "Afghanistan" },
+                { q: "Mount Everest is located on the border of which two countries?", options: ["India & Nepal", "Nepal & China", "Pakistan & China", "Bhutan & Nepal"], answer: "Nepal & China" },
+                { q: "Which city is known as 'The Eternal City'?", options: ["Athens", "Cairo", "Rome", "Istanbul"], answer: "Rome" },
+
+            ],
+
+            country:
+            [
+                { q: "which country has the largest population?", options: ["South Africa","India","China","Russia"], answer: "China"},
+                { q: "which country has the largest land area?", options: ["America","India","China","Russia"], answer: "Russia"},
+                { q: "which country is known as the land of rising sun?", options: ["Canada","Japan","China","Russia"], answer: "Japan"},
+                { q: "what is the only country that covers an entire continent ?", options: ["Greenland","Australia","China","Argentina"], answer: "Australia"},
+                { q: "which country is home to the Amazon Rainforest?", options: ["Norway","Brazil","China","Sweden"], answer: "Sweden"},
+                { q: "which European country has the most islands", options: ["Norway","Greece","China","Russia"], answer: "China"},
+                { q: "Which country is famous for having a city built on water?", options: ["Italy","Netherlands","China","Russia"], answer: "Italy"},
+                { q: "Which country has the most official languages? ", options: ["South Africa","India","China","Russia"], answer: "South Africa"},
+                { q: " Which country has the largest Muslim population?", options: ["Pakistan","India","Indonesia","Saudi Arabia"], answer: "Indone"},
+                { q: "Which country is the smallest by population?", options: ["vietnam","Vatican city","Monaco","Peru"], answer: "Vatican city"},
+                { q: "Which country has the most time zones?", options: ["Russia","France","China","U.S.A"], answer: "France"},
+
+            ]
+        };
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        function loadQuestion() {
+            if (field && questions[field] && currentQuestionIndex < questions[field].length) {
+                const currentQuestion = questions[field][currentQuestionIndex];
+                document.getElementById("quizTitle").innerText = `${field.toUpperCase()} Quiz`;
+                document.getElementById("question").innerText = currentQuestion.q;
+
+                document.querySelectorAll(".ans").forEach((button, index) => {
+                    button.innerText = currentQuestion.options[index];
+
+                    button.classList.remove("selected"); // Reset selection
+
+                    button.onclick = function () {
+                        document.querySelectorAll(".ans").forEach(btn => btn.classList.remove("selected"));
+                        this.classList.add("selected");
+                        userAnswers[currentQuestionIndex] = this.innerText;
+                    };
+                });
+
+                // Hide Previous button on the first question
+                document.getElementById("prev").style.display = currentQuestionIndex === 0 ? "none" : "inline-block";
+
+                // Hide Next button on the last question
+                document.getElementById("next").style.display = currentQuestionIndex === questions[field].length - 1 ? "none" : "inline-block";
+            }
+        }
+
+        document.getElementById("next").addEventListener("click", () => {
+            if (currentQuestionIndex < questions[field].length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        });
+
+        document.getElementById("prev").addEventListener("click", () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        });
+
+        document.getElementById("submit").addEventListener("click", evaluateQuiz);
+
+        function evaluateQuiz() {
+            let score = 0;
+            questions[field].forEach((q, index) => {
+                if (userAnswers[index] === q.answer) {
+                    score++;
+                }
+            });
+
+            alert(`Quiz Over! Your score is ${score}/${questions[field].length}`);
+            localStorage.removeItem("selectedField");
+            window.location.href = "fieldselection.html";
+        }
+
+        // **10-Minute Timer**
+        let timeLeft = 300;
+        function startTimer() {
+            const timerDisplay = document.getElementById("timer");
+            const timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                timerDisplay.innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    evaluateQuiz();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        loadQuestion();
+        startTimer();
+    </script>
+</body>
+</html>

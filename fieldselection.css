@@ -1,0 +1,112 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    /* scroll-behavior: smooth; */
+}
+body
+{
+
+    background-color: black;
+    background-image: url(images/A2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position:0;  
+    background-attachment: fixed; 
+
+}
+div
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 35px;
+    padding: 100px;
+    height: auto;
+    width: 730px;
+    margin: 90px auto;
+    transition: transform.2s;
+
+
+}
+div:hover
+{
+    transform: scale(1.025);
+}
+.opt
+{
+    background: linear-gradient(135deg, rgba(255, 255 ,255 ,0.1), rgba(255,255,255, 0));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255 ,255 ,0.18);
+    box-shadow: 0 15px 32px rgba(0, 0, 0, 0.37);
+}
+h1
+{
+    font-family: "press Start 2P", consolas;
+    text-align: center;
+    font-size: 40px;
+    color: cadetblue;
+    font-style: italic;
+    font-weight: 175px;
+    text-shadow: 3px 3px 3px;
+    color:aqua
+    
+}
+#field
+{
+    font-size: medium;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 25px;
+    font-family: "press Start 2P";
+    background-color: aqua;
+    display: block;
+    margin: auto;
+
+}
+#field:hover
+{
+    background-color: azure;
+}
+
+#opbtn
+{
+    
+    font-size: medium;
+    font-family: "press Start 2P";
+    display: block;
+    margin: auto;
+    padding: 15px 40px;
+    border: none;
+    outline: none;
+    color: black;
+    cursor:pointer;
+    border-radius: 25px;
+
+    
+}
+#opbtn:hover
+{
+    background-color: aqua
+}
+#proceed
+{
+    background-color: aqua;
+    font-size: medium;
+    font-family: "press Start 2P";
+    display: block;
+    margin: auto;
+    padding: 15px 40px;
+    border: none;
+    outline: none;
+    color: black;
+    cursor:pointer;
+    border-radius: 25px;
+}
+#proceed:hover
+{
+    background-color: white;
+}
